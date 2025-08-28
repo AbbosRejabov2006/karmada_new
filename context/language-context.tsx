@@ -87,6 +87,114 @@ const defaultTranslations: Translations = {
     socialMedia: "Ijtimoiy tarmoqlar",
     allRightsReserved: "Barcha huquqlar himoyalangan",
 
+    // About page
+    aboutHeroText: "Karmada — yevropaga ishga yuborishda ishonchli hamkor",
+    ourMission: "Bizning maqsad",
+    missionText1:
+      "Haydovchilarni adolatli shartlar asosida ishga joylashtirish.",
+    missionText2:
+      "Hujjatlar, viza va joylashtirish jarayonlarida to‘liq ko‘mak.",
+    ourTeam: "Jamoamiz",
+    teamDescription:
+      "Tajriba va mas'uliyatga tayanib, mijozlar manfaatini ustuvor qo‘yamiz.",
+    headTeacher: "Bo‘lim rahbari",
+    itDepartmentHead: "Yo‘nalish koordinatori",
+    academicDepartmentHead: "Bosh mutaxassis",
+    ourValues: "Qadriyatlarimiz",
+    valuesDescription:
+      "Ishonch, shaffoflik va mas'uliyat — faoliyatimiz asosi.",
+    qualityEducation: "Sifatli tayyorgarlik",
+    qualityEducationDesc:
+      "Intervyu va yo‘lga tayyorgarlik bo‘yicha maslahatlar.",
+    practicalSkills: "Amaliy ko‘nikmalar",
+    practicalSkillsDesc:
+      "Yo‘nalish, hujjatlar va yashash bo‘yicha yo‘riqnomalar.",
+    internationalOpportunities: "Xalqaro imkoniyatlar",
+    internationalOpportunitiesDesc:
+      "Polsha, Germaniya, Chexiya va boshqalarda ish o‘rinlari.",
+    joinOurTeam: "Jamoamizga qo‘shiling",
+    joinTeamDescription:
+      "Ish beruvchilar bilan to‘g‘ridan-to‘g‘ri hamkorlik — halol mehnat va barqaror daromad.",
+    qualifiedTeachers: "Malakali mutaxassislar",
+    yearsExperience: "Yillik tajriba",
+
+    // Jobs list
+    internationalITJobOpportunities: "Yevropadagi ish imkoniyatlari",
+    exploreExclusiveOpportunities:
+      "Karmada orqali ishonchli ish o‘rinlarini toping",
+    jobTitleOrKeyword: "Lavozim yoki kalit so‘z",
+    availableJobs: "Mavjud ishlar",
+    requirements: "Talablar",
+    posted: "e'lon qilingan",
+    apply: "Ariza topshirish",
+    noJobsFound: "Hozircha ish topilmadi",
+    tryDifferentSearch: "Boshqa qidiruv so‘zini sinab ko‘ring",
+    jobType: "Ish turi",
+    all: "Barchasi",
+    location: "Joylashuv",
+    fullTime: "To‘liq stavka",
+    partTime: "Yarim stavka",
+    contract: "Shartnoma asosida",
+    remote: "Masofaviy",
+    filter: "Tozalash",
+
+    // Jobs apply
+    backToJobs: "Ish e'lonlariga qaytish",
+    applyForPosition: "{jobTitle} lavozimiga ariza topshirish",
+    fillFormToApply: "{company} uchun ariza formasini to‘ldiring",
+    personalInformation: "Shaxsiy ma'lumotlar",
+    firstName: "Ism",
+    lastName: "Familiya",
+    phoneNumber: "Telefon raqam",
+    motivationLetter: "Motivatsion xat",
+    motivationLetterPlaceholder:
+      "Nega aynan shu ish va kompaniya? Tajribangiz haqida yozing",
+    documentsDescription: "PDF yoki rasm ko‘rinishidagi hujjatlarni yuklang",
+    resumeCV: "Rezyume (CV)",
+    passportCopy: "Passport nusxasi",
+    diplomaCertificate: "Diplom yoki guvohnoma",
+    additionalCertificates: "Qo‘shimcha sertifikatlar (ixtiyoriy)",
+    submitApplication: "Arizani yuborish",
+    applicationSubmittedSuccessfully: "Arizangiz muvaffaqiyatli yuborildi",
+    thankYouForApplication:
+      'Rahmat! Sizning {company} kompaniyasidagi "{jobTitle}" uchun arizangiz qabul qilindi.',
+    applicationReceivedDescription:
+      "Arizangiz ko‘rib chiqiladi. Qo‘shimcha ma'lumot uchun siz bilan bog‘lanamiz.",
+    viewOtherJobs: "Boshqa ishlarni ko‘rish",
+
+    // Profile – applications
+    myApplications: "Arizalarim",
+    totalApplications: "Jami arizalar",
+    recentApplications: "So‘nggi arizalar",
+    applicationStatus: "Ariza holati",
+    statusNew: "Yangi",
+    statusReviewed: "Ko‘rib chiqilgan",
+    statusInterviewed: "Suhbat",
+    statusAccepted: "Qabul qilingan",
+    statusRejected: "Rad etilgan",
+
+    // Contact page
+    contactUs: "Biz bilan bog'lanish",
+    contactUsSubtitle: "Savollaringiz bormi? Biz bilan bog'laning",
+    backToHome: "Bosh sahifaga qaytish",
+    getInTouch: "Aloqaga chiqing",
+    contactDescription:
+      "Quyidagi shakl orqali xabar qoldiring, tez orada javob beramiz.",
+    addressValue: "Toshkent shahri, O'zbekiston",
+    messageSent: "Xabar yuborildi",
+    messageSentDesc: "Xabaringiz uchun rahmat. Tez orada aloqaga chiqamiz.",
+    sendMessage: "Xabar yuborish",
+    sendMessageDesc: "Quyidagi maydonlarni to'ldiring",
+    fullName: "To'liq ism",
+    fullNamePlaceholder: "Ism Familiya",
+    emailPlaceholder: "email@example.com",
+    message: "Xabar",
+    messagePlaceholder: "Xabaringizni yozing",
+    sending: "Yuborilmoqda...",
+    send: "Yuborish",
+    ourLocation: "Manzilimiz",
+    visitOffice: "Ofisimizga tashrif buyuring",
+
     // Courses page
     itEnglishCourses: "IT uchun ingliz tili kurslari",
     specializedEnglishCourses:
@@ -306,6 +414,111 @@ const defaultTranslations: Translations = {
     socialMedia: "Соцсети",
     allRightsReserved: "Все права защищены",
 
+    // About page
+    aboutHeroText: "Karmada — надежный партнер по трудоустройству в Европе",
+    ourMission: "Наша миссия",
+    missionText1: "Трудоустраивать водителей на честных условиях.",
+    missionText2: "Полное сопровождение по документам, визе и размещению.",
+    ourTeam: "Наша команда",
+    teamDescription:
+      "Опираясь на опыт и ответственность, ставим интересы клиентов во главу угла.",
+    headTeacher: "Руководитель отдела",
+    itDepartmentHead: "Координатор направления",
+    academicDepartmentHead: "Ведущий специалист",
+    ourValues: "Наши ценности",
+    valuesDescription:
+      "Доверие, прозрачность и ответственность — основа нашей работы.",
+    qualityEducation: "Качественная подготовка",
+    qualityEducationDesc:
+      "Консультации по собеседованию и подготовке к поездке.",
+    practicalSkills: "Практические навыки",
+    practicalSkillsDesc:
+      "Маршруты, документы и проживание — подробные инструкции.",
+    internationalOpportunities: "Международные возможности",
+    internationalOpportunitiesDesc: "Работа в Польше, Германии, Чехии и др.",
+    joinOurTeam: "Присоединяйтесь к нашей команде",
+    joinTeamDescription:
+      "Прямое сотрудничество с работодателями — честный труд и стабильный доход.",
+    qualifiedTeachers: "Квалифицированные специалисты",
+    yearsExperience: "Лет опыта",
+
+    // Jobs list
+    internationalITJobOpportunities: "Работа в Европе",
+    exploreExclusiveOpportunities: "Найдите надежные вакансии с Karmada",
+    jobTitleOrKeyword: "Должность или ключевое слово",
+    availableJobs: "Доступные вакансии",
+    requirements: "Требования",
+    posted: "размещено",
+    apply: "Подать заявку",
+    noJobsFound: "Пока вакансий нет",
+    tryDifferentSearch: "Попробуйте другой запрос",
+    jobType: "Тип работы",
+    all: "Все",
+    location: "Местоположение",
+    fullTime: "Полная занятость",
+    partTime: "Частичная занятость",
+    contract: "Контракт",
+    remote: "Удаленно",
+    filter: "Очистить",
+
+    // Jobs apply
+    backToJobs: "Вернуться к вакансиям",
+    applyForPosition: "Подать заявку на должность {jobTitle}",
+    fillFormToApply: "Заполните форму для {company}",
+    personalInformation: "Личная информация",
+    firstName: "Имя",
+    lastName: "Фамилия",
+    phoneNumber: "Номер телефона",
+    motivationLetter: "Мотивационное письмо",
+    motivationLetterPlaceholder:
+      "Почему именно эта работа и компания? Опишите опыт",
+    documentsDescription: "Загрузите документы в формате PDF или изображений",
+    resumeCV: "Резюме (CV)",
+    passportCopy: "Копия паспорта",
+    diplomaCertificate: "Диплом или сертификат",
+    additionalCertificates: "Дополнительные сертификаты (по желанию)",
+    submitApplication: "Отправить заявку",
+    applicationSubmittedSuccessfully: "Ваша заявка успешно отправлена",
+    thankYouForApplication:
+      'Спасибо! Ваша заявка на "{jobTitle}" в {company} принята.',
+    applicationReceivedDescription:
+      "Мы рассмотрим вашу заявку и свяжемся с вами при необходимости.",
+    viewOtherJobs: "Посмотреть другие вакансии",
+
+    // Profile – applications
+    myApplications: "Мои заявки",
+    totalApplications: "Всего заявок",
+    recentApplications: "Недавние заявки",
+    applicationStatus: "Статус заявки",
+    statusNew: "Новая",
+    statusReviewed: "Рассмотрена",
+    statusInterviewed: "Интервью",
+    statusAccepted: "Принята",
+    statusRejected: "Отклонена",
+
+    // Contact page
+    contactUs: "Связаться с нами",
+    contactUsSubtitle: "Есть вопросы? Свяжитесь с нами",
+    backToHome: "Вернуться на главную",
+    getInTouch: "Связаться",
+    contactDescription:
+      "Оставьте сообщение через форму ниже, мы ответим в ближайшее время.",
+    addressValue: "г. Ташкент, Узбекистан",
+    messageSent: "Сообщение отправлено",
+    messageSentDesc:
+      "Спасибо за сообщение. Мы свяжемся с вами в ближайшее время.",
+    sendMessage: "Отправить сообщение",
+    sendMessageDesc: "Заполните поля ниже",
+    fullName: "Полное имя",
+    fullNamePlaceholder: "Имя Фамилия",
+    emailPlaceholder: "email@example.com",
+    message: "Сообщение",
+    messagePlaceholder: "Напишите ваше сообщение",
+    sending: "Отправка...",
+    send: "Отправить",
+    ourLocation: "Наш адрес",
+    visitOffice: "Посетите наш офис",
+
     // Courses page
     itEnglishCourses: "Курсы английского для IT",
     specializedEnglishCourses: "Специализированные курсы английского для IT",
@@ -522,6 +735,110 @@ const defaultTranslations: Translations = {
     email: "Email",
     socialMedia: "Social Media",
     allRightsReserved: "All rights reserved",
+
+    // About page
+    aboutHeroText: "Karmada — a trusted partner for jobs in Europe",
+    ourMission: "Our Mission",
+    missionText1: "Place drivers in fair, transparent roles.",
+    missionText2: "Full support for documents, visas, and relocation.",
+    ourTeam: "Our Team",
+    teamDescription:
+      "We prioritize clients' interests with experience and responsibility.",
+    headTeacher: "Department Head",
+    itDepartmentHead: "Direction Coordinator",
+    academicDepartmentHead: "Lead Specialist",
+    ourValues: "Our Values",
+    valuesDescription:
+      "Trust, transparency, and responsibility — our foundation.",
+    qualityEducation: "Quality preparation",
+    qualityEducationDesc: "Interview and trip preparation guidance.",
+    practicalSkills: "Practical skills",
+    practicalSkillsDesc: "Routes, documents, and accommodation instructions.",
+    internationalOpportunities: "International opportunities",
+    internationalOpportunitiesDesc:
+      "Jobs in Poland, Germany, Czech Republic, and more.",
+    joinOurTeam: "Join our team",
+    joinTeamDescription:
+      "Direct employer partnerships — honest work and stable income.",
+    qualifiedTeachers: "Qualified specialists",
+    yearsExperience: "Years of experience",
+
+    // Jobs list
+    internationalITJobOpportunities: "Job opportunities in Europe",
+    exploreExclusiveOpportunities: "Find trusted roles via Karmada",
+    jobTitleOrKeyword: "Job title or keyword",
+    availableJobs: "Available jobs",
+    requirements: "Requirements",
+    posted: "posted",
+    apply: "Apply",
+    noJobsFound: "No jobs found",
+    tryDifferentSearch: "Try a different search",
+    jobType: "Job type",
+    all: "All",
+    location: "Location",
+    fullTime: "Full-time",
+    partTime: "Part-time",
+    contract: "Contract",
+    remote: "Remote",
+    filter: "Clear",
+
+    // Jobs apply
+    backToJobs: "Back to jobs",
+    applyForPosition: "Apply for {jobTitle}",
+    fillFormToApply: "Fill in the form for {company}",
+    personalInformation: "Personal Information",
+    firstName: "First name",
+    lastName: "Last name",
+    phoneNumber: "Phone number",
+    motivationLetter: "Motivation letter",
+    motivationLetterPlaceholder:
+      "Why this job and company? Describe your experience",
+    documentsDescription: "Upload documents as PDF or images",
+    resumeCV: "Resume (CV)",
+    passportCopy: "Passport copy",
+    diplomaCertificate: "Diploma or certificate",
+    additionalCertificates: "Additional certificates (optional)",
+    submitApplication: "Submit application",
+    applicationSubmittedSuccessfully:
+      "Your application was submitted successfully",
+    thankYouForApplication:
+      'Thank you! Your application for "{jobTitle}" at {company} was received.',
+    applicationReceivedDescription:
+      "We’ll review your application and contact you if needed.",
+    viewOtherJobs: "View other jobs",
+
+    // Profile – applications
+    myApplications: "My applications",
+    totalApplications: "Total applications",
+    recentApplications: "Recent applications",
+    applicationStatus: "Application status",
+    statusNew: "New",
+    statusReviewed: "Reviewed",
+    statusInterviewed: "Interviewed",
+    statusAccepted: "Accepted",
+    statusRejected: "Rejected",
+
+    // Contact page
+    contactUs: "Contact Us",
+    contactUsSubtitle: "Have questions? Get in touch",
+    backToHome: "Back to home",
+    getInTouch: "Get in touch",
+    contactDescription:
+      "Send us a message using the form below and we'll get back to you soon.",
+    addressValue: "Tashkent, Uzbekistan",
+    messageSent: "Message sent",
+    messageSentDesc: "Thanks for reaching out. We'll contact you shortly.",
+    sendMessage: "Send a message",
+    sendMessageDesc: "Fill in the fields below",
+    fullName: "Full name",
+    fullNamePlaceholder: "First Last",
+    emailPlaceholder: "email@example.com",
+    message: "Message",
+    messagePlaceholder: "Write your message",
+    sending: "Sending...",
+    send: "Send",
+    ourLocation: "Our location",
+    visitOffice: "Visit our office",
 
     // Courses page
     itEnglishCourses: "IT English Courses",

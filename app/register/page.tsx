@@ -1,24 +1,31 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useLanguage } from "@/context/language-context"
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useLanguage } from "@/context/language-context";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useToast } from "@/hooks/use-toast"
-import { useAuth } from "@/context/auth-context"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/context/auth-context";
 
 export default function RegisterPage() {
-  const router = useRouter()
-  const { toast } = useToast()
-  const { registerUser, getAllUsers } = useAuth()
-  const { t } = useLanguage()
+  const router = useRouter();
+  const { toast } = useToast();
+  const { registerUser, getAllUsers } = useAuth();
+  const { t } = useLanguage();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -27,26 +34,26 @@ export default function RegisterPage() {
     phone: "",
     password: "",
     confirmPassword: "",
-  })
+  });
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
+    const { id, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [id === "first-name"
         ? "firstName"
         : id === "last-name"
-          ? "lastName"
-          : id === "confirm-password"
-            ? "confirmPassword"
-            : id]: value,
-    }))
-  }
+        ? "lastName"
+        : id === "confirm-password"
+        ? "confirmPassword"
+        : id]: value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     // Validate form
     if (
@@ -61,8 +68,8 @@ export default function RegisterPage() {
         title: t("error"),
         description: t("fillAllFields"),
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -70,73 +77,73 @@ export default function RegisterPage() {
         title: t("error"),
         description: t("passwordsDoNotMatch"),
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       toast({
         title: t("error"),
         description: t("invalidEmailFormat"),
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     // Validate phone format (simple check)
-    const phoneRegex = /^\+?[0-9\s-]{10,15}$/
+    const phoneRegex = /^\+?[0-9\s-]{10,15}$/;
     if (!phoneRegex.test(formData.phone)) {
       toast({
         title: t("error"),
         description: t("invalidPhoneFormat"),
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
       // Save current language before registration
       if (typeof window !== "undefined") {
         try {
-          const currentLanguage = localStorage.getItem("language") || "uz"
-          localStorage.setItem("profileLanguage", currentLanguage)
+          const currentLanguage = localStorage.getItem("language") || "uz";
+          localStorage.setItem("profileLanguage", currentLanguage);
         } catch (error) {
-          console.error("Error saving language preference:", error)
+          console.error("Error saving language preference:", error);
         }
       }
 
       // Generate username from email if not provided
-      const username = formData.email.split("@")[0]
+      const username = formData.email.split("@")[0];
 
       // Check if username already exists
-      const users = getAllUsers()
-      const usernameExists = users.some((user) => user.username === username)
+      const users = getAllUsers();
+      const usernameExists = users.some((user) => user.username === username);
 
       if (usernameExists) {
         toast({
           title: t("error"),
           description: t("usernameAlreadyExists"),
           variant: "destructive",
-        })
-        setIsSubmitting(false)
-        return
+        });
+        setIsSubmitting(false);
+        return;
       }
 
       // Check if email already exists
-      const emailExists = users.some((user) => user.email === formData.email)
+      const emailExists = users.some((user) => user.email === formData.email);
 
       if (emailExists) {
         toast({
           title: t("error"),
           description: t("emailAlreadyExists"),
           variant: "destructive",
-        })
-        setIsSubmitting(false)
-        return
+        });
+        setIsSubmitting(false);
+        return;
       }
 
       // Register user
@@ -146,40 +153,40 @@ export default function RegisterPage() {
         email: formData.email,
         phone: formData.phone,
         role: "user",
-      })
+      });
 
       if (newUser && newUser.id) {
         toast({
           title: t("success"),
           description: t("registrationSuccessful"),
-        })
+        });
 
-        // Redirect to login page after successful registration
+        // Redirect directly to jobs page after successful registration
         setTimeout(() => {
           try {
-            router.push("/login")
+            router.push("/jobs");
           } catch (error) {
-            console.error("Error during navigation:", error)
+            console.error("Error during navigation:", error);
           }
-        }, 500)
+        }, 500);
       } else {
         toast({
           title: t("error"),
           description: t("registrationError"),
           variant: "destructive",
-        })
+        });
       }
     } catch (error) {
-      console.error("Registration error:", error)
+      console.error("Registration error:", error);
       toast({
         title: t("error"),
         description: t("registrationError"),
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="container flex h-screen items-center justify-center">
@@ -235,7 +242,13 @@ export default function RegisterPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">{t("password")}</Label>
-              <Input id="password" type="password" required value={formData.password} onChange={handleInputChange} />
+              <Input
+                id="password"
+                type="password"
+                required
+                value={formData.password}
+                onChange={handleInputChange}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirm-password">{t("confirmPassword")}</Label>
@@ -262,5 +275,5 @@ export default function RegisterPage() {
         </form>
       </Card>
     </div>
-  )
+  );
 }

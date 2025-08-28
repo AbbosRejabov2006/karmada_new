@@ -1,13 +1,21 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { BookOpen, GraduationCap, Users, Award, Globe, CheckCircle, ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { useLanguage } from "@/context/language-context"
+import Link from "next/link";
+import {
+  BookOpen,
+  GraduationCap,
+  Users,
+  Award,
+  Globe,
+  CheckCircle,
+  ArrowLeft,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/context/language-context";
 
 export default function AboutPage() {
-  const { t } = useLanguage()
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen bg-background">
@@ -22,8 +30,12 @@ export default function AboutPage() {
       <section className="py-16 md:py-24 bg-gradient-to-r from-primary/10 to-primary/5">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-6">{t("about")}</h1>
-            <p className="text-xl text-muted-foreground mb-8">{t("aboutHeroText")}</p>
+            <h1 className="text-3xl md:text-5xl font-bold mb-6">
+              {t("about")}
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8">
+              {t("aboutHeroText")}
+            </p>
           </div>
         </div>
       </section>
@@ -34,11 +46,15 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold mb-6">{t("ourMission")}</h2>
-              <p className="text-lg text-muted-foreground mb-6">{t("missionText1")}</p>
-              <p className="text-lg text-muted-foreground mb-6">{t("missionText2")}</p>
+              <p className="text-lg text-muted-foreground mb-6">
+                {t("missionText1")}
+              </p>
+              <p className="text-lg text-muted-foreground mb-6">
+                {t("missionText2")}
+              </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" asChild>
-                  <Link href="/courses">{t("viewCourses")}</Link>
+                  <Link href="/jobs">{t("jobs")}</Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
                   <Link href="/contact">{t("contactUs")}</Link>
@@ -78,7 +94,9 @@ export default function AboutPage() {
               <CardContent className="pt-6">
                 <GraduationCap className="h-12 w-12 text-primary mx-auto mb-4" />
                 <h3 className="text-3xl font-bold mb-2">20+</h3>
-                <p className="text-muted-foreground">{t("qualifiedTeachers")}</p>
+                <p className="text-muted-foreground">
+                  {t("qualifiedTeachers")}
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -97,7 +115,9 @@ export default function AboutPage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{t("ourTeam")}</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t("teamDescription")}</p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {t("teamDescription")}
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -145,7 +165,9 @@ export default function AboutPage() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">{t("ourValues")}</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t("valuesDescription")}</p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {t("valuesDescription")}
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -182,10 +204,12 @@ export default function AboutPage() {
       <section className="py-16 bg-primary/10">
         <div className="container text-center">
           <h2 className="text-3xl font-bold mb-6">{t("joinOurTeam")}</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">{t("joinTeamDescription")}</p>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">
+            {t("joinTeamDescription")}
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild>
-              <Link href="/courses">{t("viewCourses")}</Link>
+              <Link href="/jobs">{t("jobs")}</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
               <Link href="/contact">{t("contactUs")}</Link>
@@ -194,5 +218,5 @@ export default function AboutPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
