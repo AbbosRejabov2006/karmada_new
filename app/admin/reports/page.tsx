@@ -1,140 +1,144 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Download } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useToast } from "@/hooks/use-toast"
-import { usePurchase } from "@/context/purchase-context"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useAdminLanguage } from "@/context/admin-language-context"
+import { useState } from "react";
+import { Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useAdminLanguage } from "@/context/admin-language-context";
 
 export default function AdminReportsPage() {
-  const { toast } = useToast()
-  const { getAllPurchases } = usePurchase()
-  const { t } = useAdminLanguage()
-  const allPurchases = getAllPurchases()
+  const { toast } = useToast();
+  const { t } = useAdminLanguage();
 
   // If there are no purchases in context, use sample data
-  const [orders] = useState(
-    allPurchases.length > 0
-      ? allPurchases
-      : [
-          {
-            id: "ORD-001",
-            userId: 1,
-            courseId: 1,
-            courseTitle: "Ingliz tili asoslari",
-            price: 1200000,
-            date: "2023-05-15T10:30:00Z",
-            status: "to'langan" as const,
-            paymentMethod: "click",
-          },
-          {
-            id: "ORD-002",
-            userId: 2,
-            courseId: 2,
-            courseTitle: "IT ingliz tili",
-            price: 1500000,
-            date: "2023-05-16T14:20:00Z",
-            status: "to'langan" as const,
-            paymentMethod: "payme",
-          },
-          {
-            id: "ORD-003",
-            userId: 3,
-            courseId: 3,
-            courseTitle: "Web dasturlash",
-            price: 1800000,
-            date: "2023-05-17T09:15:00Z",
-            status: "kutilmoqda" as const,
-            paymentMethod: "bank",
-          },
-          {
-            id: "ORD-004",
-            userId: 4,
-            courseId: 1,
-            courseTitle: "Ingliz tili asoslari",
-            price: 1200000,
-            date: "2023-05-18T16:45:00Z",
-            status: "bekor qilingan" as const,
-            paymentMethod: "click",
-          },
-          {
-            id: "ORD-005",
-            userId: 3,
-            courseId: 2,
-            courseTitle: "IT ingliz tili",
-            price: 1500000,
-            date: "2023-05-19T11:10:00Z",
-            status: "to'langan" as const,
-            paymentMethod: "cash",
-          },
-        ],
-  )
+  const [orders] = useState([
+    {
+      id: "ORD-001",
+      userId: 1,
+      courseId: 1,
+      courseTitle: "Ingliz tili asoslari",
+      price: 1200000,
+      date: "2023-05-15T10:30:00Z",
+      status: "to'langan" as const,
+      paymentMethod: "click",
+    },
+    {
+      id: "ORD-002",
+      userId: 2,
+      courseId: 2,
+      courseTitle: "IT ingliz tili",
+      price: 1500000,
+      date: "2023-05-16T14:20:00Z",
+      status: "to'langan" as const,
+      paymentMethod: "payme",
+    },
+    {
+      id: "ORD-003",
+      userId: 3,
+      courseId: 3,
+      courseTitle: "Web dasturlash",
+      price: 1800000,
+      date: "2023-05-17T09:15:00Z",
+      status: "kutilmoqda" as const,
+      paymentMethod: "bank",
+    },
+    {
+      id: "ORD-004",
+      userId: 4,
+      courseId: 1,
+      courseTitle: "Ingliz tili asoslari",
+      price: 1200000,
+      date: "2023-05-18T16:45:00Z",
+      status: "bekor qilingan" as const,
+      paymentMethod: "click",
+    },
+    {
+      id: "ORD-005",
+      userId: 3,
+      courseId: 2,
+      courseTitle: "IT ingliz tili",
+      price: 1500000,
+      date: "2023-05-19T11:10:00Z",
+      status: "to'langan" as const,
+      paymentMethod: "cash",
+    },
+  ]);
 
-  const [timeRange, setTimeRange] = useState("all")
-  const [reportType, setReportType] = useState("sales")
+  const [timeRange, setTimeRange] = useState("all");
+  const [reportType, setReportType] = useState("sales");
 
   const handleDownloadReport = () => {
     toast({
       title: t("downloadingReport"),
-      description: `${reportType === "sales" ? t("salesReport") : t("userReport")} ${t("downloading")}...`,
-    })
-  }
+      description: `${
+        reportType === "sales" ? t("salesReport") : t("userReport")
+      } ${t("downloading")}...`,
+    });
+  };
 
   // Calculate revenue by course
   const revenueByCourse = orders
     .filter((order) => order.status === "to'langan")
-    .reduce(
-      (acc, order) => {
-        const { courseTitle, price } = order
-        if (!acc[courseTitle]) {
-          acc[courseTitle] = 0
-        }
-        acc[courseTitle] += price
-        return acc
-      },
-      {} as Record<string, number>,
-    )
+    .reduce((acc, order) => {
+      const { courseTitle, price } = order;
+      if (!acc[courseTitle]) {
+        acc[courseTitle] = 0;
+      }
+      acc[courseTitle] += price;
+      return acc;
+    }, {} as Record<string, number>);
 
   // Calculate revenue by payment method
   const revenueByPaymentMethod = orders
     .filter((order) => order.status === "to'langan")
-    .reduce(
-      (acc, order) => {
-        const { paymentMethod, price } = order
-        if (!acc[paymentMethod]) {
-          acc[paymentMethod] = 0
-        }
-        acc[paymentMethod] += price
-        return acc
-      },
-      {} as Record<string, number>,
-    )
+    .reduce((acc, order) => {
+      const { paymentMethod, price } = order;
+      if (!acc[paymentMethod]) {
+        acc[paymentMethod] = 0;
+      }
+      acc[paymentMethod] += price;
+      return acc;
+    }, {} as Record<string, number>);
 
   // Calculate monthly revenue for the chart
   const monthlyRevenueData = Array.from({ length: 12 }, (_, i) => {
-    const month = new Date()
-    month.setMonth(month.getMonth() - i)
-    month.setDate(1)
-    month.setHours(0, 0, 0, 0)
+    const month = new Date();
+    month.setMonth(month.getMonth() - i);
+    month.setDate(1);
+    month.setHours(0, 0, 0, 0);
 
-    const nextMonth = new Date(month)
-    nextMonth.setMonth(nextMonth.getMonth() + 1)
+    const nextMonth = new Date(month);
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
 
     const revenue = orders
       .filter(
-        (order) => order.status === "to'langan" && new Date(order.date) >= month && new Date(order.date) < nextMonth,
+        (order) =>
+          order.status === "to'langan" &&
+          new Date(order.date) >= month &&
+          new Date(order.date) < nextMonth
       )
-      .reduce((sum, order) => sum + order.price, 0)
+      .reduce((sum, order) => sum + order.price, 0);
 
     return {
       month: month.toLocaleDateString("uz-UZ", { month: "short" }),
       revenue,
-    }
-  }).reverse()
+    };
+  }).reverse();
 
   return (
     <div className="container">
@@ -176,10 +180,14 @@ export default function AdminReportsPage() {
               <CardContent>
                 <div className="space-y-4">
                   {Object.entries(revenueByCourse).map(([course, revenue]) => (
-                    <div key={course} className="flex justify-between items-center">
+                    <div
+                      key={course}
+                      className="flex justify-between items-center"
+                    >
                       <span className="font-medium">{course}</span>
                       <span>
-                        {new Intl.NumberFormat("uz-UZ").format(revenue)} {t("currency")}
+                        {new Intl.NumberFormat("uz-UZ").format(revenue)}{" "}
+                        {t("currency")}
                       </span>
                     </div>
                   ))}
@@ -190,18 +198,26 @@ export default function AdminReportsPage() {
             <Card>
               <CardHeader>
                 <CardTitle>{t("revenueByPaymentMethod")}</CardTitle>
-                <CardDescription>{t("totalRevenuePerPaymentMethod")}</CardDescription>
+                <CardDescription>
+                  {t("totalRevenuePerPaymentMethod")}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {Object.entries(revenueByPaymentMethod).map(([method, revenue]) => (
-                    <div key={method} className="flex justify-between items-center">
-                      <span className="font-medium capitalize">{method}</span>
-                      <span>
-                        {new Intl.NumberFormat("uz-UZ").format(revenue)} {t("currency")}
-                      </span>
-                    </div>
-                  ))}
+                  {Object.entries(revenueByPaymentMethod).map(
+                    ([method, revenue]) => (
+                      <div
+                        key={method}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="font-medium capitalize">{method}</span>
+                        <span>
+                          {new Intl.NumberFormat("uz-UZ").format(revenue)}{" "}
+                          {t("currency")}
+                        </span>
+                      </div>
+                    )
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -211,23 +227,39 @@ export default function AdminReportsPage() {
           <Card>
             <CardHeader>
               <CardTitle>{t("monthlyRevenue")}</CardTitle>
-              <CardDescription>{t("monthlyRevenueForLast12Months")}</CardDescription>
+              <CardDescription>
+                {t("monthlyRevenueForLast12Months")}
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="h-80">
                 <div className="flex h-full items-end gap-2">
                   {monthlyRevenueData.map((data, index) => {
                     const height = data.revenue
-                      ? `${(data.revenue / Math.max(...monthlyRevenueData.map((d) => d.revenue))) * 100}%`
-                      : "0%"
+                      ? `${
+                          (data.revenue /
+                            Math.max(
+                              ...monthlyRevenueData.map((d) => d.revenue)
+                            )) *
+                          100
+                        }%`
+                      : "0%";
                     return (
-                      <div key={index} className="flex-1 flex flex-col items-center">
-                        <div className="w-full bg-primary/20 rounded-t" style={{ height }}>
+                      <div
+                        key={index}
+                        className="flex-1 flex flex-col items-center"
+                      >
+                        <div
+                          className="w-full bg-primary/20 rounded-t"
+                          style={{ height }}
+                        >
                           <div className="w-full h-full bg-primary opacity-80 rounded-t"></div>
                         </div>
-                        <div className="mt-2 text-xs text-muted-foreground">{data.month}</div>
+                        <div className="mt-2 text-xs text-muted-foreground">
+                          {data.month}
+                        </div>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -244,21 +276,29 @@ export default function AdminReportsPage() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div className="bg-muted/30 p-4 rounded-lg">
-                  <h3 className="text-lg font-medium mb-2">{t("totalUsers")}</h3>
+                  <h3 className="text-lg font-medium mb-2">
+                    {t("totalUsers")}
+                  </h3>
                   <p className="text-3xl font-bold">1,234</p>
                 </div>
                 <div className="bg-muted/30 p-4 rounded-lg">
-                  <h3 className="text-lg font-medium mb-2">{t("activeStudents")}</h3>
+                  <h3 className="text-lg font-medium mb-2">
+                    {t("activeStudents")}
+                  </h3>
                   <p className="text-3xl font-bold">856</p>
                 </div>
                 <div className="bg-muted/30 p-4 rounded-lg">
-                  <h3 className="text-lg font-medium mb-2">{t("averageCourses")}</h3>
+                  <h3 className="text-lg font-medium mb-2">
+                    {t("averageCourses")}
+                  </h3>
                   <p className="text-3xl font-bold">2.3</p>
                 </div>
               </div>
 
               <div className="mt-8">
-                <h3 className="text-lg font-medium mb-4">{t("mostPopularCourses")}</h3>
+                <h3 className="text-lg font-medium mb-4">
+                  {t("mostPopularCourses")}
+                </h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span>Ingliz tili asoslari</span>
@@ -279,5 +319,5 @@ export default function AdminReportsPage() {
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }

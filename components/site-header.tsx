@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useCallback } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Menu,
   X,
@@ -16,66 +16,65 @@ import {
   User,
   LogOut,
   Settings,
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { ThemeToggle } from "@/components/theme-toggle"
-import LanguageSwitcher from "@/components/language-switcher"
-import { useAuth } from "@/context/auth-context"
-import { useLanguage } from "@/context/language-context"
-import CartIcon from "@/components/cart-icon"
-import NotificationBell from "@/components/notification-bell"
-import UserMenu from "@/components/user-menu"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/theme-toggle";
+import LanguageSwitcher from "@/components/language-switcher";
+import { useAuth } from "@/context/auth-context";
+import { useLanguage } from "@/context/language-context";
+import NotificationBell from "@/components/notification-bell";
+import UserMenu from "@/components/user-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export function SiteHeader() {
   // All hooks must be called at the top level
-  const [mounted, setMounted] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
+  const [mounted, setMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   // Call all context hooks unconditionally at the top level
-  const languageContext = useLanguage()
-  const authContext = useAuth()
+  const languageContext = useLanguage();
+  const authContext = useAuth();
 
-  const { t } = languageContext || { t: (key: string) => key }
+  const { t } = languageContext || { t: (key: string) => key };
   const { user, isAuthenticated, logout, isAdmin } = authContext || {
     user: null,
     isAuthenticated: false,
     logout: () => {},
     isAdmin: false,
-  }
+  };
 
   // Handle scroll effect
   const handleScroll = useCallback(() => {
-    setIsScrolled(window.scrollY > 10)
-  }, [])
+    setIsScrolled(window.scrollY > 10);
+  }, []);
 
   // Set mounted state and add scroll listener
   useEffect(() => {
-    setMounted(true)
-    window.addEventListener("scroll", handleScroll)
+    setMounted(true);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [handleScroll])
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
   // Skip rendering header on admin pages
-  const shouldSkipHeader = pathname?.startsWith("/admin")
+  const shouldSkipHeader = pathname?.startsWith("/admin");
   if (shouldSkipHeader) {
-    return null
+    return null;
   }
 
   // Don't render anything until mounted to avoid hydration issues
   if (!mounted) {
     return (
       <header className="h-12 md:h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"></header>
-    )
+    );
   }
 
   // If there was an error accessing the context, show a minimal header
@@ -91,17 +90,28 @@ export function SiteHeader() {
           </div>
         </div>
       </header>
-    )
+    );
   }
 
   // Navigation links
   const navLinks = [
     { href: "/", label: t("home"), icon: <Home className="h-3 w-3 mr-1" /> },
-    { href: "/courses", label: t("courses"), icon: <BookOpen className="h-3 w-3 mr-1" /> },
-    { href: "/jobs", label: t("jobs"), icon: <Briefcase className="h-3 w-3 mr-1" /> },
-    { href: "/about", label: t("about"), icon: <Info className="h-3 w-3 mr-1" /> },
-    { href: "/contact", label: t("contact"), icon: <Phone className="h-3 w-3 mr-1" /> },
-  ]
+    {
+      href: "/jobs",
+      label: t("jobs"),
+      icon: <Briefcase className="h-3 w-3 mr-1" />,
+    },
+    {
+      href: "/about",
+      label: t("about"),
+      icon: <Info className="h-3 w-3 mr-1" />,
+    },
+    {
+      href: "/contact",
+      label: t("contact"),
+      icon: <Phone className="h-3 w-3 mr-1" />,
+    },
+  ];
 
   return (
     <header
@@ -254,7 +264,7 @@ export function SiteHeader() {
 
             <Link href="/" className="flex items-center space-x-1 ml-1 md:ml-0">
               {/* <BookOpen className="h-5 w-5 text-primary" /> */}
-              <img 
+              <img
                 className="h-8 w-8"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRalnaLIIStyCkZr7-J1K5kybfNFoZAqleU4BVBor1ijlRBXbApH1MwN1usGh6onMxFjq4&usqp=CAU"
                 alt=""
@@ -348,8 +358,7 @@ export function SiteHeader() {
             {/* Notifications */}
             {isAuthenticated && <NotificationBell />}
 
-            {/* Shopping cart */}
-            <CartIcon />
+            {/* Shopping cart removed */}
 
             {/* User menu */}
             {isAuthenticated ? (
@@ -390,4 +399,4 @@ export function SiteHeader() {
   );
 }
 
-export default SiteHeader
+export default SiteHeader;

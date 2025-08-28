@@ -1,9 +1,15 @@
-"use client"
+"use client";
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import { useRouter } from "next/navigation"
-import { useToast } from "@/hooks/use-toast"
-import { useTranslation } from "react-i18next"
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "react-i18next";
 
 // Define all possible permissions
 export const PERMISSIONS = {
@@ -32,39 +38,47 @@ export const PERMISSIONS = {
   MANAGE_PAYMENTS: "manage_payments",
   MANAGE_DOCUMENTS: "manage_documents",
   MANAGE_SETTINGS: "manage_settings",
-}
+};
 
 // Define role types
-export type UserRole = "admin" | "hr_manager" | "english_teacher" | "it_teacher" | "user"
+export type UserRole =
+  | "admin"
+  | "hr_manager"
+  | "worker_manager"
+  | "english_teacher"
+  | "it_teacher"
+  | "user";
 
 export type User = {
-  id: number
-  username: string
-  name: string
-  email: string
-  phone: string
-  role: UserRole
-  avatar?: string
-  registeredAt?: string
-  permissions: string[]
-  active: boolean
-}
+  id: number;
+  username: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: UserRole;
+  avatar?: string;
+  registeredAt?: string;
+  permissions: string[];
+  active: boolean;
+};
 
 export type AuthContextType = {
-  user: User | null
-  isLoading: boolean
-  login: (username: string, password: string) => Promise<boolean>
-  logout: () => void
-  updateUser: (updatedUser: User) => void
-  isAuthenticated: boolean
-  isAdmin: boolean
-  isStaff: boolean
-  hasPermission: (permission: string) => boolean
-  getAllUsers: () => User[]
-  registerUser: (user: Omit<User, "id" | "registeredAt" | "permissions" | "active">) => User
-  updateUserPermissions: (userId: number, permissions: string[]) => void
-  toggleUserActive: (userId: number, active: boolean) => void
-}
+  user: User | null;
+  isLoading: boolean;
+  login: (username: string, password: string) => Promise<boolean>;
+  logout: () => void;
+  updateUser: (updatedUser: User) => void;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  isStaff: boolean;
+  hasPermission: (permission: string) => boolean;
+  getAllUsers: () => User[];
+  registerUser: (
+    user: Omit<User, "id" | "registeredAt" | "permissions" | "active">
+  ) => User;
+  updateUserPermissions: (userId: number, permissions: string[]) => void;
+  toggleUserActive: (userId: number, active: boolean) => void;
+};
 
 // Define default permissions for each role
 const DEFAULT_PERMISSIONS = {
@@ -77,6 +91,12 @@ const DEFAULT_PERMISSIONS = {
     PERMISSIONS.VIEW_CANDIDATES,
     PERMISSIONS.MANAGE_USERS,
     PERMISSIONS.MANAGE_JOBS,
+  ],
+  worker_manager: [
+    PERMISSIONS.VIEW_DASHBOARD,
+    PERMISSIONS.VIEW_TEACHERS,
+    PERMISSIONS.VIEW_JOBS,
+    PERMISSIONS.MANAGE_TEACHERS,
   ],
   english_teacher: [
     PERMISSIONS.VIEW_DASHBOARD,
@@ -95,7 +115,7 @@ const DEFAULT_PERMISSIONS = {
     PERMISSIONS.MANAGE_COURSES,
   ],
   user: [],
-}
+};
 
 // Create auth context with default values
 const defaultAuthContext: AuthContextType = {
@@ -121,7 +141,7 @@ const defaultAuthContext: AuthContextType = {
   }),
   updateUserPermissions: () => {},
   toggleUserActive: () => {},
-}
+};
 
 // Xavfsizlik uchun JWT token yaratish funksiyasi
 const generateToken = (user: User): string => {
@@ -132,80 +152,82 @@ const generateToken = (user: User): string => {
     username: user.username,
     role: user.role,
     permissions: user.permissions,
-  }
+  };
 
   // Amaliy loyihada maxfiy kalit bilan imzolanishi kerak
-  return btoa(JSON.stringify(payload))
-}
+  return btoa(JSON.stringify(payload));
+};
 
 // Token tekshirish funksiyasi
 const verifyToken = (token: string): any => {
   try {
     // Amaliy loyihada bu server tomonida tekshirilishi kerak
-    return JSON.parse(atob(token))
+    return JSON.parse(atob(token));
   } catch (error) {
-    console.error("Token verification failed", error)
-    return null
+    console.error("Token verification failed", error);
+    return null;
   }
-}
+};
 
-export const AuthContext = createContext<AuthContextType>(defaultAuthContext)
+export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
-  const { toast } = useToast()
-  const { t } = useTranslation()
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const { toast } = useToast();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Check if user is logged in from token in sessionStorage
       try {
-        const token = sessionStorage.getItem("authToken")
+        const token = sessionStorage.getItem("authToken");
         if (token) {
-          const userData = verifyToken(token)
+          const userData = verifyToken(token);
           if (userData) {
             // Get full user data from localStorage (in real app, this would be from API)
-            const users = getAllUsers()
-            const foundUser = users.find((u) => u.id === userData.id)
+            const users = getAllUsers();
+            const foundUser = users.find((u) => u.id === userData.id);
             if (foundUser && foundUser.active) {
-              setUser(foundUser)
+              setUser(foundUser);
             } else {
               // Token valid but user not found or inactive
-              sessionStorage.removeItem("authToken")
+              sessionStorage.removeItem("authToken");
             }
           } else {
             // Invalid token
-            sessionStorage.removeItem("authToken")
+            sessionStorage.removeItem("authToken");
           }
         }
       } catch (error) {
-        console.error("Failed to parse stored token", error)
-        sessionStorage.removeItem("authToken")
+        console.error("Failed to parse stored token", error);
+        sessionStorage.removeItem("authToken");
       }
     }
 
-    setIsLoading(false)
-  }, [])
+    setIsLoading(false);
+  }, []);
 
   // Get all registered users from localStorage
   const getAllUsers = (): User[] => {
-    if (typeof window === "undefined") return []
+    if (typeof window === "undefined") return [];
 
     try {
-      const storedUsers = localStorage.getItem("registeredUsers")
+      const storedUsers = localStorage.getItem("registeredUsers");
       if (storedUsers) {
-        return JSON.parse(storedUsers)
+        return JSON.parse(storedUsers);
       }
     } catch (error) {
-      console.error("Failed to get registered users", error)
+      console.error("Failed to get registered users", error);
     }
-    return []
-  }
+    return [];
+  };
 
   // Register a new user
-  const registerUser = (newUser: Omit<User, "id" | "registeredAt" | "permissions" | "active">) => {
+  const registerUser = (
+    newUser: Omit<User, "id" | "registeredAt" | "permissions" | "active">
+  ) => {
     if (typeof window === "undefined") {
       return {
         id: 0,
@@ -216,15 +238,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         role: "user",
         permissions: [],
         active: false,
-      }
+      };
     }
 
     try {
-      const users = getAllUsers()
-      const id = users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1
+      const users = getAllUsers();
+      const id = users.length > 0 ? Math.max(...users.map((u) => u.id)) + 1 : 1;
 
       // Assign default permissions based on role
-      const permissions = DEFAULT_PERMISSIONS[newUser.role] || []
+      const permissions = DEFAULT_PERMISSIONS[newUser.role] || [];
 
       const userWithId: User = {
         ...newUser,
@@ -232,14 +254,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         registeredAt: new Date().toISOString(),
         permissions,
         active: true,
-      }
+      };
 
-      const updatedUsers = [...users, userWithId]
-      localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers))
+      const updatedUsers = [...users, userWithId];
+      localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
 
-      return userWithId
+      return userWithId;
     } catch (error) {
-      console.error("Failed to register user", error)
+      console.error("Failed to register user", error);
       return {
         id: 0,
         username: "",
@@ -249,22 +271,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         role: "user",
         permissions: [],
         active: false,
-      }
+      };
     }
-  }
+  };
 
   // Modify the login function to only allow existing users or predefined credentials
-  const login = async (username: string, password: string): Promise<boolean> => {
-    if (typeof window === "undefined") return false
+  const login = async (
+    username: string,
+    password: string
+  ): Promise<boolean> => {
+    if (typeof window === "undefined") return false;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       // Get all registered users
-      const users = getAllUsers()
+      const users = getAllUsers();
 
-      // Check if user exists
-      const existingUser = users.find((u) => u.username === username)
+      // Accept either username or email (with or without @gmail.com)
+      const normalize = (value: string) => {
+        const v = value.trim().toLowerCase();
+        if (v.includes("@")) {
+          return { email: v, username: v.split("@")[0] };
+        }
+        return { email: `${v}@gmail.com`, username: v };
+      };
+
+      const input = normalize(username);
+
+      const existingUser = users.find(
+        (u) =>
+          u.username.toLowerCase() === input.username ||
+          (u.email && u.email.toLowerCase() === input.email)
+      );
 
       if (existingUser) {
         // In a real app, you would check the password here
@@ -276,29 +315,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             title: t("accountInactive"),
             description: t("accountInactiveDescription"),
             variant: "destructive",
-          })
-          setIsLoading(false)
-          return false
+          });
+          setIsLoading(false);
+          return false;
         }
 
         // Create and store JWT token
-        const token = generateToken(existingUser)
-        sessionStorage.setItem("authToken", token)
+        const token = generateToken(existingUser);
+        sessionStorage.setItem("authToken", token);
 
-        setUser(existingUser)
+        setUser(existingUser);
 
         // Restore language preference after login
-        const userLanguage = localStorage.getItem("profileLanguage") || localStorage.getItem("language") || "uz"
-        localStorage.setItem("language", userLanguage)
+        const userLanguage =
+          localStorage.getItem("profileLanguage") ||
+          localStorage.getItem("language") ||
+          "uz";
+        localStorage.setItem("language", userLanguage);
 
         // Trigger language change event
         if (typeof window !== "undefined") {
-          const event = new CustomEvent("languageChanged", { detail: userLanguage })
-          window.dispatchEvent(event)
+          const event = new CustomEvent("languageChanged", {
+            detail: userLanguage,
+          });
+          window.dispatchEvent(event);
         }
 
-        setIsLoading(false)
-        return true
+        setIsLoading(false);
+        return true;
       }
 
       // If this is a first-time login with predefined credentials
@@ -314,22 +358,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           registeredAt: new Date().toISOString(),
           permissions: DEFAULT_PERMISSIONS.admin,
           active: true,
-        }
+        };
 
-        setUser(adminUser)
+        setUser(adminUser);
 
         // Create and store JWT token
-        const token = generateToken(adminUser)
-        sessionStorage.setItem("authToken", token)
+        const token = generateToken(adminUser);
+        sessionStorage.setItem("authToken", token);
 
         // Add admin to registered users if not already there
         if (!users.some((u) => u.username === "admin")) {
-          const updatedUsers = [...users, adminUser]
-          localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers))
+          const updatedUsers = [...users, adminUser];
+          localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
         }
 
-        setIsLoading(false)
-        return true
+        setIsLoading(false);
+        return true;
       } else if (username === "hr" && password === "hr123") {
         const hrUser: User = {
           id: 2,
@@ -342,22 +386,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           registeredAt: new Date().toISOString(),
           permissions: DEFAULT_PERMISSIONS.hr_manager,
           active: true,
-        }
+        };
 
-        setUser(hrUser)
+        setUser(hrUser);
 
         // Create and store JWT token
-        const token = generateToken(hrUser)
-        sessionStorage.setItem("authToken", token)
+        const token = generateToken(hrUser);
+        sessionStorage.setItem("authToken", token);
 
         // Add HR to registered users if not already there
         if (!users.some((u) => u.username === "hr")) {
-          const updatedUsers = [...users, hrUser]
-          localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers))
+          const updatedUsers = [...users, hrUser];
+          localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
         }
 
-        setIsLoading(false)
-        return true
+        setIsLoading(false);
+        return true;
       } else if (username === "english" && password === "english123") {
         const englishTeacher: User = {
           id: 3,
@@ -370,22 +414,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           registeredAt: new Date().toISOString(),
           permissions: DEFAULT_PERMISSIONS.english_teacher,
           active: true,
-        }
+        };
 
-        setUser(englishTeacher)
+        setUser(englishTeacher);
 
         // Create and store JWT token
-        const token = generateToken(englishTeacher)
-        sessionStorage.setItem("authToken", token)
+        const token = generateToken(englishTeacher);
+        sessionStorage.setItem("authToken", token);
 
         // Add English teacher to registered users if not already there
         if (!users.some((u) => u.username === "english")) {
-          const updatedUsers = [...users, englishTeacher]
-          localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers))
+          const updatedUsers = [...users, englishTeacher];
+          localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
         }
 
-        setIsLoading(false)
-        return true
+        setIsLoading(false);
+        return true;
       } else if (username === "it" && password === "it123") {
         const itTeacher: User = {
           id: 4,
@@ -398,22 +442,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           registeredAt: new Date().toISOString(),
           permissions: DEFAULT_PERMISSIONS.it_teacher,
           active: true,
-        }
+        };
 
-        setUser(itTeacher)
+        setUser(itTeacher);
 
         // Create and store JWT token
-        const token = generateToken(itTeacher)
-        sessionStorage.setItem("authToken", token)
+        const token = generateToken(itTeacher);
+        sessionStorage.setItem("authToken", token);
 
         // Add IT teacher to registered users if not already there
         if (!users.some((u) => u.username === "it")) {
-          const updatedUsers = [...users, itTeacher]
-          localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers))
+          const updatedUsers = [...users, itTeacher];
+          localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
         }
 
-        setIsLoading(false)
-        return true
+        setIsLoading(false);
+        return true;
       }
 
       // If we get here, the login failed
@@ -421,120 +465,124 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: t("loginFailed"),
         description: t("usernameOrPasswordIncorrect"),
         variant: "destructive",
-      })
+      });
 
-      setIsLoading(false)
-      return false
+      setIsLoading(false);
+      return false;
     } catch (error) {
-      console.error("Login error:", error)
-      setIsLoading(false)
-      return false
+      console.error("Login error:", error);
+      setIsLoading(false);
+      return false;
     }
-  }
+  };
 
   const updateUser = (updatedUser: User) => {
-    if (typeof window === "undefined") return
+    if (typeof window === "undefined") return;
 
-    setUser(updatedUser)
+    setUser(updatedUser);
 
     // Update token with new user data
-    const token = generateToken(updatedUser)
-    sessionStorage.setItem("authToken", token)
+    const token = generateToken(updatedUser);
+    sessionStorage.setItem("authToken", token);
 
     // Also update the user in the registered users list
     try {
-      const users = getAllUsers()
-      const updatedUsers = users.map((u) => (u.id === updatedUser.id ? updatedUser : u))
-      localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers))
+      const users = getAllUsers();
+      const updatedUsers = users.map((u) =>
+        u.id === updatedUser.id ? updatedUser : u
+      );
+      localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
     } catch (error) {
-      console.error("Failed to update user in registered users", error)
+      console.error("Failed to update user in registered users", error);
     }
-  }
+  };
 
   const updateUserPermissions = (userId: number, permissions: string[]) => {
-    if (typeof window === "undefined") return
+    if (typeof window === "undefined") return;
 
     try {
-      const users = getAllUsers()
+      const users = getAllUsers();
       const updatedUsers = users.map((u) => {
         if (u.id === userId) {
-          return { ...u, permissions }
+          return { ...u, permissions };
         }
-        return u
-      })
+        return u;
+      });
 
-      localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers))
+      localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
 
       // If the current user's permissions are being updated, update the current user state
       if (user && user.id === userId) {
-        const updatedUser = { ...user, permissions }
-        setUser(updatedUser)
+        const updatedUser = { ...user, permissions };
+        setUser(updatedUser);
 
         // Update token with new permissions
-        const token = generateToken(updatedUser)
-        sessionStorage.setItem("authToken", token)
+        const token = generateToken(updatedUser);
+        sessionStorage.setItem("authToken", token);
       }
 
       toast({
         title: "Ruxsatlar yangilandi",
         description: "Foydalanuvchi ruxsatlari muvaffaqiyatli yangilandi",
-      })
+      });
     } catch (error) {
-      console.error("Failed to update user permissions:", error)
+      console.error("Failed to update user permissions:", error);
       toast({
         title: "Xatolik",
         description: "Foydalanuvchi ruxsatlarini yangilashda xatolik yuz berdi",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   const toggleUserActive = (userId: number, active: boolean) => {
-    if (typeof window === "undefined") return
+    if (typeof window === "undefined") return;
 
     try {
-      const users = getAllUsers()
+      const users = getAllUsers();
       const updatedUsers = users.map((u) => {
         if (u.id === userId) {
-          return { ...u, active }
+          return { ...u, active };
         }
-        return u
-      })
+        return u;
+      });
 
-      localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers))
+      localStorage.setItem("registeredUsers", JSON.stringify(updatedUsers));
 
       toast({
-        title: active ? "Foydalanuvchi faollashtirildi" : "Foydalanuvchi o'chirildi",
+        title: active
+          ? "Foydalanuvchi faollashtirildi"
+          : "Foydalanuvchi o'chirildi",
         description: active
           ? "Foydalanuvchi muvaffaqiyatli faollashtirildi"
           : "Foydalanuvchi muvaffaqiyatli o'chirildi",
-      })
+      });
     } catch (error) {
-      console.error("Failed to toggle user active state:", error)
+      console.error("Failed to toggle user active state:", error);
       toast({
         title: "Xatolik",
         description: "Foydalanuvchi holatini o'zgartirishda xatolik yuz berdi",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
 
   const logout = () => {
-    if (typeof window === "undefined") return
+    if (typeof window === "undefined") return;
 
-    setUser(null)
-    sessionStorage.removeItem("authToken")
-    router.push("/")
+    setUser(null);
+    sessionStorage.removeItem("authToken");
+    router.push("/");
     toast({
       title: "Chiqish",
       description: "Siz tizimdan muvaffaqiyatli chiqdingiz",
-    })
-  }
+    });
+  };
 
   const hasPermission = (permission: string): boolean => {
-    if (!user || !user.permissions) return false
-    return user.permissions.includes(permission)
-  }
+    if (!user || !user.permissions) return false;
+    return user.permissions.includes(permission);
+  };
 
   return (
     <AuthContext.Provider
@@ -549,6 +597,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isStaff:
           user?.role === "admin" ||
           user?.role === "hr_manager" ||
+          user?.role === "worker_manager" ||
           user?.role === "english_teacher" ||
           user?.role === "it_teacher",
         hasPermission,
@@ -560,10 +609,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext)
-  return context
+  const context = useContext(AuthContext);
+  return context;
 }

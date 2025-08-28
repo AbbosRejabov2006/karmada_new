@@ -1,103 +1,111 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useAuth } from "@/context/auth-context"
-import { useLanguage } from "@/context/language-context"
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth-context";
+import { useLanguage } from "@/context/language-context";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const { toast } = useToast()
-  const { login } = useAuth()
-  const { t, language } = useLanguage()
+  const router = useRouter();
+  const { toast } = useToast();
+  const { login } = useAuth();
+  const { t, language } = useLanguage();
 
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
     // Clear error when user types
-    if (error) setError("")
-  }
+    if (error) setError("");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!formData.username || !formData.password) {
-      setError(t("usernameAndPasswordRequired"))
-      return
+      setError(t("usernameAndPasswordRequired"));
+      return;
     }
 
-    setLoading(true)
-    setError("")
+    setLoading(true);
+    setError("");
 
     try {
       // Save current language before login attempt
       if (typeof window !== "undefined") {
         try {
-          const currentLanguage = localStorage.getItem("language") || "uz"
-          localStorage.setItem("profileLanguage", currentLanguage)
+          const currentLanguage = localStorage.getItem("language") || "uz";
+          localStorage.setItem("profileLanguage", currentLanguage);
         } catch (error) {
-          console.error("Error saving language preference:", error)
+          console.error("Error saving language preference:", error);
         }
       }
 
-      const success = await login(formData.username, formData.password)
+      const success = await login(formData.username, formData.password);
 
       if (success) {
         toast({
           title: t("loginSuccess"),
-          description: formData.username === "admin" ? t("adminPanelOpening") : t("loginSuccessful"),
-        })
+          description:
+            formData.username === "admin"
+              ? t("adminPanelOpening")
+              : t("loginSuccessful"),
+        });
 
         // Use setTimeout to avoid state updates after component unmount
         setTimeout(() => {
           try {
             if (formData.username === "admin") {
-              router.push("/admin")
+              router.push("/admin");
             } else if (formData.username === "hr") {
-              router.push("/admin/jobs")
-            } else if (formData.username === "english" || formData.username === "it") {
-              router.push("/admin/courses")
+              router.push("/admin/jobs");
             } else {
-              router.push("/profile")
+              router.push("/profile");
             }
           } catch (error) {
-            console.error("Error during navigation:", error)
+            console.error("Error during navigation:", error);
           }
-        }, 500)
+        }, 500);
       } else {
-        setError(t("usernameOrPasswordIncorrect"))
+        setError(t("usernameOrPasswordIncorrect"));
       }
     } catch (error) {
-      console.error("Login error:", error)
-      setError(t("loginError"))
+      console.error("Login error:", error);
+      setError(t("loginError"));
       toast({
         title: t("error"),
         description: t("loginError"),
         variant: "destructive",
-      })
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="container flex min-h-screen items-center justify-center py-8">
@@ -108,7 +116,11 @@ export default function LoginPage() {
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="grid gap-4">
-            {error && <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-md">{error}</div>}
+            {error && (
+              <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-md">
+                {error}
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="username">{t("username")}</Label>
               <Input
@@ -151,5 +163,5 @@ export default function LoginPage() {
         </form>
       </Card>
     </div>
-  )
+  );
 }

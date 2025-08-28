@@ -1,31 +1,31 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Menu, X, ChevronLeft, MessageSquare } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useAuth } from "@/context/auth-context"
-import { useLanguage } from "@/context/language-context"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu, X, ChevronLeft, MessageSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useAuth } from "@/context/auth-context";
+import { useLanguage } from "@/context/language-context";
 
 export function MobileNav() {
   // State
-  const [open, setOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // Get auth context
-  const auth = useAuth()
-  const { isAuthenticated, user, logout } = auth
-  const { language, t } = useLanguage()
+  const auth = useAuth();
+  const { isAuthenticated, user, logout } = auth;
+  const { language, t } = useLanguage();
 
-  const pathname = usePathname()
-  const isAdmin = pathname?.startsWith("/admin")
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
 
   // Set mounted state
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   // Don't render anything until mounted to avoid hydration issues
   if (!mounted) {
@@ -34,7 +34,7 @@ export function MobileNav() {
         <Menu className="h-6 w-6" />
         <span className="sr-only">Open menu</span>
       </Button>
-    )
+    );
   }
 
   return (
@@ -48,8 +48,12 @@ export function MobileNav() {
       <SheetContent side="left" className="w-[280px] sm:w-[400px]">
         <div className="flex flex-col gap-6 py-6">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 font-bold text-xl" onClick={() => setOpen(false)}>
-              IT English Academy
+            <Link
+              href="/"
+              className="flex items-center gap-2 font-bold text-xl"
+              onClick={() => setOpen(false)}
+            >
+              Karmada
             </Link>
             <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
               <X className="h-6 w-6" />
@@ -57,24 +61,42 @@ export function MobileNav() {
             </Button>
           </div>
           <nav className="flex flex-col gap-4">
-            <Link href="/" className="text-lg font-medium py-2 flex items-center" onClick={() => setOpen(false)}>
+            <Link
+              href="/"
+              className="text-lg font-medium py-2 flex items-center"
+              onClick={() => setOpen(false)}
+            >
               <ChevronLeft className="h-4 w-4 mr-2" />
               {t("home")}
             </Link>
-            <Link href="/courses" className="text-lg font-medium py-2" onClick={() => setOpen(false)}>
-              {t("courses")}
-            </Link>
-            <Link href="/jobs" className="text-lg font-medium py-2" onClick={() => setOpen(false)}>
+            {/* Courses removed */}
+            <Link
+              href="/jobs"
+              className="text-lg font-medium py-2"
+              onClick={() => setOpen(false)}
+            >
               {t("jobs")}
             </Link>
-            <Link href="/about" className="text-lg font-medium py-2" onClick={() => setOpen(false)}>
+            <Link
+              href="/about"
+              className="text-lg font-medium py-2"
+              onClick={() => setOpen(false)}
+            >
               {t("about")}
             </Link>
-            <Link href="/contact" className="text-lg font-medium py-2" onClick={() => setOpen(false)}>
+            <Link
+              href="/contact"
+              className="text-lg font-medium py-2"
+              onClick={() => setOpen(false)}
+            >
               {t("contact")}
             </Link>
             {isAuthenticated && (
-              <Link href="/profile/chat" className="text-lg font-medium py-2" onClick={() => setOpen(false)}>
+              <Link
+                href="/profile/chat"
+                className="text-lg font-medium py-2"
+                onClick={() => setOpen(false)}
+              >
                 <MessageSquare className="mr-2 h-4 w-4 inline" />
                 Chat
               </Link>
@@ -89,7 +111,9 @@ export function MobileNav() {
                   </div>
                   <div>
                     <p className="font-medium">{user?.name}</p>
-                    <p className="text-sm text-muted-foreground">{user?.email}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {user?.email}
+                    </p>
                   </div>
                 </div>
                 <Link href="/profile" onClick={() => setOpen(false)}>
@@ -107,8 +131,8 @@ export function MobileNav() {
                 <Button
                   className="w-full"
                   onClick={() => {
-                    logout()
-                    setOpen(false)
+                    logout();
+                    setOpen(false);
                   }}
                 >
                   {t("logout")}
@@ -130,5 +154,5 @@ export function MobileNav() {
         </div>
       </SheetContent>
     </Sheet>
-  )
+  );
 }
