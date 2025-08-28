@@ -57,6 +57,62 @@ export default function RootLayout({
         <ClientProviders>
           <SiteHeader />
           <main className="min-h-screen">{children}</main>
+          <footer className="w-full bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 mt-8">
+            <div className="max-w-5xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+              <div>
+                <span className="font-bold text-lg text-gray-800 dark:text-gray-100">
+                  KARMADA
+                </span>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                  Yangi avlod uchun zamonaviy bilim va imkoniyatlar platformasi.
+                </p>
+              </div>
+              <div className="flex flex-col gap-1">
+                <a
+                  href="/"
+                  className="text-gray-700 dark:text-gray-200 hover:underline"
+                >
+                  Bosh sahifa
+                </a>
+                <a
+                  href="/about"
+                  className="text-gray-700 dark:text-gray-200 hover:underline"
+                >
+                  Biz haqimizda
+                </a>
+                <a
+                  href="/courses"
+                  className="text-gray-700 dark:text-gray-200 hover:underline"
+                >
+                  Kurslar
+                </a>
+                <a
+                  href="/contact"
+                  className="text-gray-700 dark:text-gray-200 hover:underline"
+                >
+                  Aloqa
+                </a>
+              </div>
+              <div className="text-gray-600 dark:text-gray-400 text-sm">
+                <div>
+                  Telefon:{" "}
+                  <a href="tel:+998901234567" className="hover:underline">
+                    +998 90 123 45 67
+                  </a>
+                </div>
+                <div>
+                  Email:{" "}
+                  <a href="mailto:info@karmada.uz" className="hover:underline">
+                    info@karmada.uz
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="text-center text-xs text-gray-500 dark:text-gray-600 pb-4">
+              &copy; {new Date().getFullYear()} KARMADA. Barcha huquqlar
+              himoyalangan.
+            </div>
+          </footer>
         </ClientProviders>
       </body>
     </html>
