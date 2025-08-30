@@ -42,13 +42,13 @@ export default function AdminDashboard() {
         <Card className="p-4 md:p-6">
           <h2 className="text-base md:text-lg font-semibold mb-4">{t("recentRegistrations")}</h2>
           <div className="space-y-3 md:space-y-4">
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[1, 2].map((i) => (
               <div key={i} className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200"></div>
                   <div className="ml-3">
                     <div className="text-sm md:text-base font-medium">User {i}</div>
-                    <div className="text-xs md:text-sm text-muted-foreground">user{i}@example.com</div>
+                    <div className="text-xs md:text-sm text-muted-foreground">user{i}@example.com </div>
                   </div>
                 </div>
                 <div className="text-xs md:text-sm text-muted-foreground">2h ago</div>
@@ -60,12 +60,12 @@ export default function AdminDashboard() {
         <Card className="p-4 md:p-6">
           <h2 className="text-base md:text-lg font-semibold mb-4">{t("recentPurchases")}</h2>
           <div className="space-y-3 md:space-y-4">
-            {[1, 2, 3, 4, 5].map((i) => (
+            {[1].map((i) => (
               <div key={i} className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-8 h-8 md:w-10 md:h-10 rounded bg-gray-200"></div>
                   <div className="ml-3">
-                    <div className="text-sm md:text-base font-medium">Course {i}</div>
+                    <div className="text-sm md:text-base font-medium">Jobs {i}</div>
                     <div className="text-xs md:text-sm text-muted-foreground">User {i}</div>
                   </div>
                 </div>

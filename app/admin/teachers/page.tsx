@@ -59,6 +59,16 @@ export default function AdminTeachersPage() {
   const [filteredTeachers, setFilteredTeachers] = useState<Teacher[]>([]);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [teacherToDelete, setTeacherToDelete] = useState<number | null>(null);
+  // Role creation dialog state
+  const [isRoleDialogOpen, setIsRoleDialogOpen] = useState(false);
+  const [newRole, setNewRole] = useState("");
+  const [roles, setRoles] = useState<string[]>(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("roles");
+      return stored ? JSON.parse(stored) : [t("korxonaIshchisi")];
+    }
+    return [t("korxonaIshchisi")];
+  });
 
   // Load teachers from localStorage
   const loadTeachers = () => {
@@ -69,32 +79,26 @@ export default function AdminTeachersPage() {
         // Normalize data for consistency
         const normalizedTeachers = parsedTeachers.map((teacher: any) => ({
           ...teacher,
-          // Use avatar if available, otherwise use image
           avatar: teacher.avatar || teacher.image,
-          // Use position if available, otherwise use specialization or default
-          position: teacher.position || teacher.specialization || t("teacher"),
-          // Use specialty if available, otherwise use specialization or default
-          specialty:
-            teacher.specialty || teacher.specialization || t("englishLanguage"),
-          // Check all required fields
+          position: teacher.position || t("korxonaIshchisi"),
+          specialty: teacher.specialty || t("mutaxassislik"),
           experience: teacher.experience || t("unknown"),
-          bio: teacher.bio || `${teacher.name} - ${t("teacherBio")}`,
+          bio: teacher.bio || `${teacher.name} - ${t("workerBio")}`,
           status: teacher.status || t("active"),
-          // Ensure courses is always an array
           courses: teacher.courses || [],
         }));
         setTeachers(normalizedTeachers);
         setFilteredTeachers(normalizedTeachers);
       } else {
-        // If no teachers in localStorage, use sample data
+        // If no teachers in localStorage, use sample data for korxona ishchilari
         const sampleTeachers = [
           {
             id: 1,
             name: "Aziza Karimova",
-            position: t("seniorEnglishTeacher"),
-            specialty: t("englishLanguage"),
-            experience: "8 " + t("years"),
-            bio: t("azizaBio"),
+            position: t("korxonaIshchisi"),
+            specialty: t("buxgalteriya"),
+            experience: "8 " + t("yil"),
+            bio: t("azizaWorkerBio"),
             email: "aziza@example.com",
             phone: "+998 90 123 45 67",
             image: "/placeholder.svg?height=400&width=400&text=Aziza",
@@ -104,10 +108,10 @@ export default function AdminTeachersPage() {
           {
             id: 2,
             name: "Bobur Aliyev",
-            position: t("itEnglishSpecialist"),
-            specialty: t("itEnglish"),
-            experience: "5 " + t("years"),
-            bio: t("boburBio"),
+            position: t("korxonaIshchisi"),
+            specialty: t("kadrlar"),
+            experience: "5 " + t("yil"),
+            bio: t("boburWorkerBio"),
             email: "bobur@example.com",
             phone: "+998 90 234 56 78",
             image: "/placeholder.svg?height=400&width=400&text=Bobur",
@@ -117,10 +121,10 @@ export default function AdminTeachersPage() {
           {
             id: 3,
             name: "Jasur Toshmatov",
-            position: t("seniorWebDeveloper"),
-            specialty: t("webDevelopment"),
-            experience: "7 " + t("years"),
-            bio: t("jasurBio"),
+            position: t("korxonaIshchisi"),
+            specialty: t("axborotTexnologiyalari"),
+            experience: "7 " + t("yil"),
+            bio: t("jasurWorkerBio"),
             email: "jasur@example.com",
             phone: "+998 90 345 67 89",
             image: "/placeholder.svg?height=400&width=400&text=Jasur",
@@ -130,10 +134,10 @@ export default function AdminTeachersPage() {
           {
             id: 4,
             name: "Dilshod Rahimov",
-            position: t("pythonDeveloper"),
-            specialty: t("pythonProgramming"),
-            experience: "4 " + t("years"),
-            bio: t("dilshodBio"),
+            position: t("korxonaIshchisi"),
+            specialty: t("xavfsizlik"),
+            experience: "4 " + t("yil"),
+            bio: t("dilshodWorkerBio"),
             email: "dilshod@example.com",
             phone: "+998 90 456 78 90",
             image: "/placeholder.svg?height=400&width=400&text=Dilshod",
@@ -143,10 +147,10 @@ export default function AdminTeachersPage() {
           {
             id: 5,
             name: "Malika Umarova",
-            position: t("javaDeveloper"),
-            specialty: t("javaProgramming"),
-            experience: "6 " + t("years"),
-            bio: t("malikaBio"),
+            position: t("korxonaIshchisi"),
+            specialty: t("marketing"),
+            experience: "6 " + t("yil"),
+            bio: t("malikaWorkerBio"),
             email: "malika@example.com",
             phone: "+998 90 567 89 01",
             image: "/placeholder.svg?height=400&width=400&text=Malika",
@@ -254,11 +258,17 @@ export default function AdminTeachersPage() {
   return (
     <div className="container">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Ishchilarni boshqarish</h1>
-        <Button onClick={handleAddTeacher}>
-          <Plus className="h-4 w-4 mr-2" />
-          Yangi hodim qo'shish
-        </Button>
+        <h1 className="text-2xl font-bold">Korxona ishchilarini boshqarish</h1>
+        <div className="flex gap-2">
+          <Button onClick={handleAddTeacher}>
+            <Plus className="h-4 w-4 mr-2" />
+            {t("addWorker") || "Yangi hodim qo'shish"}
+          </Button>
+          <Button variant="secondary" onClick={() => setIsRoleDialogOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            {t("createRole") || "Rol yaratish"}
+          </Button>
+        </div>
       </div>
 
       <Card className="mb-6">
@@ -277,8 +287,10 @@ export default function AdminTeachersPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Ishchilar ro'yxati</CardTitle>
-          <CardDescription>Barcha ishchilarni boshqarish</CardDescription>
+          <CardTitle>{t("workerList") || "Ishchilar ro'yxati"}</CardTitle>
+          <CardDescription>
+            {t("manageAllWorkers") || "Barcha ishchilarni boshqarish"}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border overflow-x-auto">
@@ -349,9 +361,11 @@ export default function AdminTeachersPage() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("confirmDeleteTeacher")}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("confirmDeleteWorker") || t("confirmDeleteTeacher")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              {t("deleteTeacherWarning")}
+              {t("deleteWorkerWarning") || t("deleteTeacherWarning")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -361,6 +375,48 @@ export default function AdminTeachersPage() {
               className="bg-destructive text-destructive-foreground"
             >
               {t("delete")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Role creation dialog */}
+      <AlertDialog open={isRoleDialogOpen} onOpenChange={setIsRoleDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t("createRole") || "Rol yaratish"}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("enterRoleName") || "Yangi rol nomini kiriting va saqlang."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <Input
+            placeholder={t("roleName") || "Rol nomi"}
+            value={newRole}
+            onChange={(e) => setNewRole(e.target.value)}
+            className="mb-4"
+          />
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (newRole.trim()) {
+                  const updatedRoles = [...roles, newRole.trim()];
+                  setRoles(updatedRoles);
+                  localStorage.setItem("roles", JSON.stringify(updatedRoles));
+                  setNewRole("");
+                  setIsRoleDialogOpen(false);
+                  toast({
+                    title: t("roleCreated") || "Rol yaratildi",
+                    description: `${newRole} ${
+                      t("roleCreatedSuccess") || "muvaffaqiyatli yaratildi"
+                    }`,
+                  });
+                }
+              }}
+            >
+              {t("save") || "Saqlash"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

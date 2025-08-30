@@ -29,9 +29,27 @@ export default function AddTeacherPage() {
     email: "",
     phone: "",
     specialization: "",
-    status: "active",
+    role: "",
     selectedCourses: [] as number[],
   })
+
+  // Load roles from localStorage
+  const [roles, setRoles] = useState<string[]>([]);
+  useEffect(() => {
+    try {
+      const storedRoles = localStorage.getItem("roles");
+      if (storedRoles) {
+        setRoles(JSON.parse(storedRoles));
+        setFormData((prev) => ({ ...prev, role: JSON.parse(storedRoles)[0] || "" }));
+      } else {
+        setRoles([t("korxonaIshchisi")]);
+        setFormData((prev) => ({ ...prev, role: t("korxonaIshchisi") }));
+      }
+    } catch {
+      setRoles([t("korxonaIshchisi")]);
+      setFormData((prev) => ({ ...prev, role: t("korxonaIshchisi") }));
+    }
+  }, [t]);
 
   useEffect(() => {
     // Check permissions
@@ -56,10 +74,7 @@ export default function AddTeacherPage() {
     }
 
     // Update status based on language change
-    setFormData((prev) => ({
-      ...prev,
-      status: t("activeValue"),
-    }))
+  // No status field anymore
   }, [hasPermission, router, toast, language, t])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +141,7 @@ export default function AddTeacherPage() {
           .join("")}`,
         specialization: formData.specialization,
         courses: formData.selectedCourses,
-        status: formData.status,
+        role: formData.role,
         rating: 5.0, // Default rating for new teachers
         joinedAt: new Date().toISOString(),
         // Additional fields for consistency
@@ -228,39 +243,22 @@ export default function AddTeacherPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="status">{t("status")}</Label>
-              <Select value={formData.status} onValueChange={(value) => handleSelectChange("status", value)}>
+              <Label htmlFor="role">{t("role") || "Rol"}</Label>
+              <Select value={formData.role} onValueChange={(value) => handleSelectChange("role", value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder={t("selectStatus")} />
+                  <SelectValue placeholder={t("selectRole") || "Rolni tanlang"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="active">{t("active")}</SelectItem>
-                  <SelectItem value="inactive">{t("inactive")}</SelectItem>
+                  {roles.map((role) => (
+                    <SelectItem key={role} value={role}>
+                      {role}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label>{t("courses")}</Label>
-              <div className="border rounded-md p-4 space-y-2">
-                {courses.length > 0 ? (
-                  courses.map((course) => (
-                    <div key={course.id} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`course-${course.id}`}
-                        checked={formData.selectedCourses.includes(course.id)}
-                        onCheckedChange={() => handleCourseToggle(course.id)}
-                      />
-                      <Label htmlFor={`course-${course.id}`} className="cursor-pointer">
-                        {course.title}
-                      </Label>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-muted-foreground">{t("noCourseAvailable")}</p>
-                )}
-              </div>
-            </div>
+           
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button variant="outline" type="button" onClick={() => router.push("/admin/teachers")}>

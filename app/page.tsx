@@ -4,9 +4,12 @@ import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
+  Globe,
   GraduationCap,
   Languages,
   Laptop,
+  Star,
+  TrendingUp,
   Users,
 } from "lucide-react";
 
@@ -141,6 +144,109 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <section className="w-full py-8 md:py-24 lg:py-32 bg-gray-50 dark:bg-gray-950">
+  <div className="container px-4 md:px-6">
+    <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+      <div className="space-y-2">
+        <div className="inline-block rounded-lg bg-gray-200 dark:bg-gray-800 px-3 py-1 text-sm text-gray-700 dark:text-gray-300">
+          Bizning muvaffaqiyatlar
+        </div>
+        <h2 className="text-3xl font-bold tracking-tighter md:text-4xl text-gray-900 dark:text-gray-100">
+          Karmada bilan muvaffaqiyat yo'li
+        </h2>
+        <p className="max-w-[900px] text-gray-600 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+          Minglab haydovchilar Karmada orqali Yevropada yangi hayot boshladilar
+        </p>
+      </div>
+    </div>
+
+    <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
+      {/* Card 1 */}
+      <div className="flex-1 group">
+        <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+          <div className="relative p-8">
+            <div className="flex items-center justify-center w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-full mb-6 mx-auto">
+              <GraduationCap className="h-8 w-8 text-blue-800 dark:text-blue-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-center mb-4 text-gray-900 dark:text-gray-100">
+              Karmada'da o'qib, Yevropada ishlang
+            </h3>
+            <p className="text-center text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+              Professional tayyorgarlik dasturimiz orqali Yevropa standartlariga mos haydovchi bo'ling. Til kurslari, texnik bilimlar va madaniy tayyorgarlik - hammasi bir joyda.
+            </p>
+            <div className="flex items-center justify-center space-x-4 text-sm text-blue-700 dark:text-blue-400">
+              <div className="flex items-center">
+                <Star className="h-4 w-4 mr-1" />
+                <span>Professional dastur</span>
+              </div>
+              <div className="flex items-center">
+                <Globe className="h-4 w-4 mr-1" />
+                <span>Xalqaro sertifikat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Card 2 */}
+      <div className="flex-1 group">
+        <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+          <div className="relative p-8">
+            <div className="flex items-center justify-center w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-full mb-6 mx-auto">
+              <TrendingUp className="h-8 w-8 text-blue-800 dark:text-blue-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-center mb-4 text-gray-900 dark:text-gray-100">
+              Yuqori maosh va imkoniyatlar
+            </h3>
+            <p className="text-center text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+              Yevropada haydovchilar uchun oylik maosh 2500-4000 Evro. Qo'shimcha bonuslar, sug'urta, ta'til pullari va oilangiz uchun yashash imkoniyatlari.
+            </p>
+            <div className="flex items-center justify-center space-x-4 text-sm text-blue-700 dark:text-blue-400">
+              <div className="flex items-center">
+                <Star className="h-4 w-4 mr-1" />
+                <span>2500-4000€/oy</span>
+              </div>
+              <div className="flex items-center">
+                <Globe className="h-4 w-4 mr-1" />
+                <span>Qo'shimcha bonuslar</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Card 3 */}
+      <div className="flex-1 group">
+        <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+          <div className="relative p-8">
+            <div className="flex items-center justify-center w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-full mb-6 mx-auto">
+              <Users className="h-8 w-8 text-blue-800 dark:text-blue-400" />
+            </div>
+            <h3 className="text-2xl font-bold text-center mb-4 text-gray-900 dark:text-gray-100">
+              Oila uchun yangi imkoniyatlar
+            </h3>
+            <p className="text-center text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+              Oilangizni ham olib kelish imkoniyati, bolalar uchun bepul ta'lim, tibbiy xizmatlar va Yevropa fuqaroligi olish yo'li.
+            </p>
+            <div className="flex items-center justify-center space-x-4 text-sm text-blue-700 dark:text-blue-400">
+              <div className="flex items-center">
+                <Star className="h-4 w-4 mr-1" />
+                <span>Oila bilan</span>
+              </div>
+              <div className="flex items-center">
+                <Globe className="h-4 w-4 mr-1" />
+                <span>Bepul ta'lim</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+      
 
       {/* Jobs CTA section (replaces courses) */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
@@ -189,7 +295,7 @@ export default function HomePage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-primary-foreground px-8"
+                  className="border-primary-foreground text-black dark:text-white px-8"
                 >
                   {t("jobs")}
                 </Button>
