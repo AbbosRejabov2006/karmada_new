@@ -50,25 +50,15 @@ type Teacher = {
 };
 
 export default function AdminTeachersPage() {
-  const { toast } = useToast();
-  const router = useRouter();
-  const { addNotification } = useNotification();
-  const { language, t } = useAdminLanguage();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
-  const [filteredTeachers, setFilteredTeachers] = useState<Teacher[]>([]);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [teacherToDelete, setTeacherToDelete] = useState<number | null>(null);
-  // Role creation dialog state
-  const [isRoleDialogOpen, setIsRoleDialogOpen] = useState(false);
-  const [newRole, setNewRole] = useState("");
-  const [roles, setRoles] = useState<string[]>(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("roles");
-      return stored ? JSON.parse(stored) : [t("korxonaIshchisi")];
-    }
-    return [t("korxonaIshchisi")];
-  });
+  const { toast } = useToast()
+  const router = useRouter()
+  const { addNotification } = useNotification()
+  const { language, t } = useAdminLanguage()
+  const [searchQuery, setSearchQuery] = useState("")
+  const [teachers, setTeachers] = useState<Teacher[]>([])
+  const [filteredTeachers, setFilteredTeachers] = useState<Teacher[]>([])
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [teacherToDelete, setTeacherToDelete] = useState<number | null>(null)
 
   // Load teachers from localStorage
   const loadTeachers = () => {
@@ -80,8 +70,11 @@ export default function AdminTeachersPage() {
         const normalizedTeachers = parsedTeachers.map((teacher: any) => ({
           ...teacher,
           avatar: teacher.avatar || teacher.image,
-          position: teacher.position || t("korxonaIshchisi"),
-          specialty: teacher.specialty || t("mutaxassislik"),
+          // Use position if available, otherwise use specialization or default
+          position: teacher.position || teacher.specialization || t("teacher"),
+          // Use specialty if available, otherwise use specialization or default
+          specialty: teacher.specialty || teacher.specialization || t("englishLanguage"),
+          // Check all required fields
           experience: teacher.experience || t("unknown"),
           bio: teacher.bio || `${teacher.name} - ${t("workerBio")}`,
           status: teacher.status || t("active"),
@@ -258,17 +251,11 @@ export default function AdminTeachersPage() {
   return (
     <div className="container">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Korxona ishchilarini boshqarish</h1>
-        <div className="flex gap-2">
-          <Button onClick={handleAddTeacher}>
-            <Plus className="h-4 w-4 mr-2" />
-            {t("addWorker") || "Yangi hodim qo'shish"}
-          </Button>
-          <Button variant="secondary" onClick={() => setIsRoleDialogOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
-            {t("createRole") || "Rol yaratish"}
-          </Button>
-        </div>
+        <h1 className="text-2xl font-bold">{t("manageTeachers")}</h1>
+        <Button onClick={handleAddTeacher}>
+          <Plus className="h-4 w-4 mr-2" />
+          {t("addNewTeacher")}
+        </Button>
       </div>
 
       <Card className="mb-6">
@@ -287,10 +274,8 @@ export default function AdminTeachersPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>{t("workerList") || "Ishchilar ro'yxati"}</CardTitle>
-          <CardDescription>
-            {t("manageAllWorkers") || "Barcha ishchilarni boshqarish"}
-          </CardDescription>
+          <CardTitle>{t("teachersList")}</CardTitle>
+          <CardDescription>{t("manageAllTeachers")}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border overflow-x-auto">
@@ -361,12 +346,8 @@ export default function AdminTeachersPage() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              {t("confirmDeleteWorker") || t("confirmDeleteTeacher")}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              {t("deleteWorkerWarning") || t("deleteTeacherWarning")}
-            </AlertDialogDescription>
+            <AlertDialogTitle>{t("confirmDeleteTeacher")}</AlertDialogTitle>
+            <AlertDialogDescription>{t("deleteTeacherWarning")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
